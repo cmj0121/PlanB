@@ -1,0 +1,23 @@
+- title: The example PlanB pricing page
+  subject: Try the PlanB pricing all-in-one platform service.
+  description: |
+    This is an example page for the PlanB all-in-one pricing platform service.
+    It includes a title, subject, description, and a list of pricing plans, and integrate
+    other existing finance services.
+
+  plans:
+    - name: Free
+      price:
+        mo: 0
+        yr: 0
+    - name: Team
+      recommanded: true
+      trial: true
+      price:
+        mo: 4
+        yr: 40
+    - name: Enterprise
+      trial: true
+      price:
+        mo: 15
+        yr: 150
