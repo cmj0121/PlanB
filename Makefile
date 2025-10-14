@@ -1,28 +1,29 @@
-SUBDIR :=
+.PHONY: all clean test run build upgrade prologue help
 
-.PHONY: all clean test run build upgrade help $(SUBDIR)
-
-all: $(SUBDIR) 		# default action
+all: 		 					# default action
 	@[ -f .git/hooks/pre-commit ] || pre-commit install --install-hooks
 	@git config commit.template .git-commit-template
 
-clean: $(SUBDIR)	# clean-up environment
+clean: 						# clean-up environment
 	@find . -name '*.sw[po]' -delete
+	@rm -rf dist/ node_modules/
 
-test:				# run test
+test:							# run test
 
-run:				# run in the local environment
+run: build				# run in the local environment
+	python3 -m http.server
 
-build:				# build the binary/library
+build: prologue		# build the binary/library
+	pnpm run build
 
-upgrade:			# upgrade all the necessary packages
+upgrade:					# upgrade all the necessary packages
 	pre-commit autoupdate
 
-help:				# show this message
+help:							# show this message
 	@printf "Usage: make [OPTION]\n"
 	@printf "\n"
 	@perl -nle 'print $$& if m{^[\w-]+:.*?#.*$$}' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?#"} {printf "    %-18s %s\n", $$1, $$2}'
 
-$(SUBDIR):
-	$(MAKE) -C $@ $(MAKECMDGOALS)
+prologue:
+	pnpm install
