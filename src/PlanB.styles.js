@@ -27,6 +27,36 @@ export const planBStyles = css`
     font-weight: 600;
     font-size: 1.15rem;
     margin: 0 0 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .billing-toggle {
+    display: inline-flex;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    padding: 2px;
+    font-size: 12px;
+  }
+  .billing-btn {
+    background: transparent;
+    border: 0;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    color: #374151;
+  }
+  .billing-btn.active {
+    background: #6366f1;
+    color: #fff;
+    font-weight: 600;
+  }
+  .billing-btn:not(.active):hover {
+    background: #e5e7eb;
   }
 
   .status {

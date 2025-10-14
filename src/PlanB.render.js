@@ -1,22 +1,30 @@
 import { html } from "lit";
 
 /** Card template (single plan) */
-export function renderCard(plan, idx, activeIndex) {
-  const monthly =
-    plan.monthly_price != null ? `$${plan.monthly_price}/mo` : "—";
-  const yearly = plan.yearly_price != null ? `$${plan.yearly_price}/yr` : null;
+export function renderCard(plan, idx, activeIndex, billing) {
+  const monthlyRaw = plan.monthly_price != null ? plan.monthly_price : null;
+  const yearlyRaw = plan.yearly_price != null ? plan.yearly_price : null;
   const active = idx === activeIndex;
   const classes = ["card", active ? "active" : ""].filter(Boolean).join(" ");
+
+  const display =
+    billing === "yearly"
+      ? yearlyRaw != null
+        ? `$${yearlyRaw}/yr`
+        : monthlyRaw != null
+          ? `$${monthlyRaw}/mo`
+          : "—"
+      : monthlyRaw != null
+        ? `$${monthlyRaw}/mo`
+        : yearlyRaw != null
+          ? `$${yearlyRaw}/yr`
+          : "—";
 
   return html`
     <div class="${classes}" data-index="${idx}" part="card">
       <h3>${plan.name}</h3>
       <div class="price-row">
-        <span class="price">${monthly}</span>
-        ${yearly
-          ? html`<span class="divider">|</span
-              ><span class="price">${yearly}</span>`
-          : ""}
+        <span class="price">${display}</span>
       </div>
       ${plan.features?.length
         ? html`<ul>
@@ -29,7 +37,7 @@ export function renderCard(plan, idx, activeIndex) {
 
 /** Root wrapper template (delegates events back to component instance) */
 export function renderRoot(ctx) {
-  const { _plans, _loading, _error, _activeIndex } = ctx;
+  const { _plans, _loading, _error, _activeIndex, _billingPeriod } = ctx;
   const showLoading = _loading && !_plans.length;
   const showEmpty = !_loading && !_plans.length;
 
@@ -42,13 +50,37 @@ export function renderRoot(ctx) {
         tabindex="0"
         role="list"
       >
-        ${_plans.map((p, i) => renderCard(p, i, _activeIndex))}
+        ${_plans.map((p, i) => renderCard(p, i, _activeIndex, _billingPeriod))}
       </div>`
     : "";
 
   return html`
     <div class="wrapper" part="wrapper">
-      <header>Plans</header>
+      <header>
+        Plans
+        ${_plans.length
+          ? html`<span class="billing-toggle" part="billing-toggle">
+              <button
+                class="billing-btn ${_billingPeriod === "monthly"
+                  ? "active"
+                  : ""}"
+                @click=${() => ctx._setBilling("monthly")}
+                aria-pressed=${_billingPeriod === "monthly"}
+              >
+                Mo
+              </button>
+              <button
+                class="billing-btn ${_billingPeriod === "yearly"
+                  ? "active"
+                  : ""}"
+                @click=${() => ctx._setBilling("yearly")}
+                aria-pressed=${_billingPeriod === "yearly"}
+              >
+                Yr
+              </button>
+            </span>`
+          : ""}
+      </header>
 
       ${showLoading ? html`<div class="status">Loading…</div>` : ""}
       ${showEmpty

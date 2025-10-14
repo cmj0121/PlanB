@@ -31,6 +31,9 @@ export class PlanBWidget extends LitElement {
 
     /** Currently active (highlighted) card index */
     _activeIndex: { state: true },
+
+    /** Billing period: 'monthly' | 'yearly' */
+    _billingPeriod: { state: true },
   };
 
   static styles = planBStyles;
@@ -44,6 +47,7 @@ export class PlanBWidget extends LitElement {
     this._error = null;
     this._abortCtl = null;
     this._activeIndex = 0;
+    this._billingPeriod = "monthly";
   }
 
   connectedCallback() {
@@ -211,6 +215,15 @@ export class PlanBWidget extends LitElement {
         }),
       );
     }
+  }
+
+  _setBilling(mode) {
+    if (mode !== "monthly" && mode !== "yearly") return;
+    if (this._billingPeriod === mode) return;
+    this._billingPeriod = mode;
+    this.dispatchEvent(
+      new CustomEvent("planb-billing-change", { detail: { period: mode } }),
+    );
   }
 
   render() {
