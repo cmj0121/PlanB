@@ -1,11 +1,12 @@
 {
+  "default_plan": "Pro",
   "plans": [
     {
       "name": "Basic",
       "description": "Basic plan suitable for individuals.",
       "monthly_price": 9,
       "yearly_price": 90,
-      "features": ["Feature 1", "Feature 2"]
+      "features": ["Feature 1"]
     },
     {
       "name": "Pro",
