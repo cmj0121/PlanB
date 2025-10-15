@@ -2,21 +2,26 @@
   "plans": [
     {
       "name": "Basic",
+      "description": "Basic plan suitable for individuals.",
       "monthly_price": 9,
       "yearly_price": 90,
       "features": ["Feature 1", "Feature 2"]
     },
     {
       "name": "Pro",
+      "description": "Pro plan for small teams.",
       "monthly_price": 19,
       "yearly_price": 190,
-      "features": ["Feature 1", "Feature 2", "Feature 3"]
+      "features": ["Feature 3"],
+      "inherits": "Basic"
     },
     {
       "name": "Enterprise",
+      "description": "Enterprise plan for large organizations.",
       "monthly_price": 49,
       "yearly_price": 490,
-      "features": ["Feature 1", "Feature 2", "Feature 3", "Feature 4"]
+      "features": ["Feature 4"],
+      "inherits": "Pro"
     }
   ],
   "features": {

@@ -22,12 +22,22 @@ export function renderCard(plan, idx, activeIndex, billing) {
 
   return html`
     <div class="${classes}" data-index="${idx}" part="card">
-      <h3>${plan.name}</h3>
-      <div class="price-row">
-        <span class="price">${display}</span>
+      <div class="card-head">
+        <h3>${plan.name}</h3>
+        <div class="price-row">
+          <span class="price">${display}</span>
+        </div>
       </div>
+      ${plan.description
+        ? html`<p class="desc">${plan.description}</p>`
+        : html`<p class="desc placeholder">&nbsp;</p>`}
+      <span class="more"
+        >${plan.inherits
+          ? html`Everything include <b>${plan.inherits}</b>, and more ...`
+          : ""}</span
+      >
       ${plan.features?.length
-        ? html`<ul>
+        ? html`<ul class="feature-list">
             ${plan.features.map((f) => html`<li>${f}</li>`)}
           </ul>`
         : ""}

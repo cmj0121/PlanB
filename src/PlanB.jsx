@@ -84,8 +84,28 @@ export class PlanBWidget extends LitElement {
         name: p.name ?? "Unnamed",
         monthly_price: p.monthly_price ?? null,
         yearly_price: p.yearly_price ?? null,
-        features: Array.isArray(p.features) ? p.features.slice(0, 6) : [],
+        inherits: p.inherits || null,
+        description: typeof p.description === "string" ? p.description : "",
+        features: Array.isArray(p.features) ? p.features.slice() : [],
       }));
+
+      // Resolve inheritance: merge features from inherited plan(s)
+      const byName = Object.fromEntries(this._plans.map((p) => [p.name, p]));
+      const resolve = (plan, seen = new Set()) => {
+        if (!plan?.inherits) return plan.features;
+        if (seen.has(plan.name)) return plan.features; // cycle guard
+        const base = byName[plan.inherits];
+        if (!base) return plan.features;
+        seen.add(plan.name);
+        const baseFeatures = resolve(base, seen);
+        plan.features = Array.from(
+          new Set([...(baseFeatures || []), ...(plan.features || [])]),
+        );
+        return plan.features;
+      };
+      this._plans.forEach((p) => resolve(p));
+      // Trim feature list for display (keep original merged ordering, first inherited then own)
+      this._plans.forEach((p) => (p.features = p.features.slice(0, 6)));
 
       // Determine default active index precedence:
       // 1. JSON response default_plan
