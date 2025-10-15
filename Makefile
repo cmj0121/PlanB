@@ -14,6 +14,7 @@ run: build				# run in the local environment
 	python3 -m http.server
 
 build: prologue		# build the binary/library
+	pnpm run lint
 	pnpm run build
 
 upgrade:					# upgrade all the necessary packages

@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css } from "lit";
 
 /**
  * <planb-widget>
@@ -28,16 +28,32 @@ export class PlanBWidget extends LitElement {
   static styles = css`
     :host {
       display: inline-block;
-      font: 14px system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', Arial, sans-serif;
-      padding: .75rem 1rem;
+      font:
+        14px system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Oxygen,
+        Ubuntu,
+        Cantarell,
+        "Fira Sans",
+        "Droid Sans",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+      padding: 0.75rem 1rem;
       border: 1px solid #e5e7eb;
       border-radius: 8px;
       background: #ffffff;
-      box-shadow: 0 1px 3px rgba(0,0,0,.1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       line-height: 1.25;
       user-select: none;
     }
-    strong { color: #6366f1; font-weight: 600; }
+    strong {
+      color: #6366f1;
+      font-weight: 600;
+    }
   `;
 
   /**
@@ -50,6 +66,6 @@ export class PlanBWidget extends LitElement {
 }
 
 // Safe registration (idempotent)
-if (!customElements.get('planb-widget')) {
-  customElements.define('planb-widget', PlanBWidget);
+if (!customElements.get("planb-widget")) {
+  customElements.define("planb-widget", PlanBWidget);
 }
