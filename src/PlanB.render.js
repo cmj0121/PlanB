@@ -47,7 +47,14 @@ export function renderCard(plan, idx, activeIndex, billing) {
 
 /** Root wrapper template (delegates events back to component instance) */
 export function renderRoot(ctx) {
-  const { _plans, _loading, _error, _activeIndex, _billingPeriod } = ctx;
+  const {
+    _plans,
+    _loading,
+    _error,
+    _activeIndex,
+    _billingPeriod,
+    _featureDict,
+  } = ctx;
   const showLoading = _loading && !_plans.length;
   const showEmpty = !_loading && !_plans.length;
 
@@ -63,6 +70,54 @@ export function renderRoot(ctx) {
         ${_plans.map((p, i) => renderCard(p, i, _activeIndex, _billingPeriod))}
       </div>`
     : "";
+
+  // Comparison table generation
+  let comparison = null;
+  if (_plans.length && _featureDict && Object.keys(_featureDict).length) {
+    const featureNames = Object.keys(_featureDict);
+    const featureColPx = 140;
+    const planColW = `calc((100% - ${featureColPx}px)/${_plans.length || 1})`;
+    comparison = html`<div class="comparison-wrap">
+      <table class="comparison" part="comparison">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            ${_plans.map(
+              (p, i) =>
+                html`<th
+                  scope="col"
+                  class="${i === _activeIndex ? "active" : ""}"
+                  style="width:${planColW}"
+                >
+                  ${p.name}
+                </th>`,
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          ${featureNames.map((fname) => {
+            const desc = _featureDict[fname] || "";
+            return html`<tr>
+              <th scope="row" title="${desc}">
+                <span class="feature-name" title="${desc}">${fname}</span>
+              </th>
+              ${_plans.map(
+                (p, i) =>
+                  html`<td
+                    class="${i === _activeIndex ? "active" : ""}"
+                    style="width:${planColW}"
+                  >
+                    ${p.features.includes(fname)
+                      ? html`<span class="check" aria-label="Included">✓</span>`
+                      : html`<span class="dash" aria-hidden="true">—</span>`}
+                  </td>`,
+              )}
+            </tr>`;
+          })}
+        </tbody>
+      </table>
+    </div>`;
+  }
 
   return html`
     <div class="wrapper" part="wrapper">
@@ -99,6 +154,7 @@ export function renderRoot(ctx) {
           </div>`
         : ""}
       ${_error ? html`<div class="error">${_error}</div>` : ""} ${cards}
+      ${comparison}
     </div>
   `;
 }

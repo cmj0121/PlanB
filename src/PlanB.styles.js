@@ -260,4 +260,174 @@ export const planBStyles = css`
       scroll-snap-align: unset;
     }
   }
+
+  /* Comparison Table */
+  .comparison-wrap {
+    margin-top: 1.5rem;
+    overflow-x: auto;
+  }
+  .comparison {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 520px;
+    font-size: 12px;
+  }
+  .comparison th,
+  .comparison td {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.5rem 0.6rem;
+  }
+  .comparison thead th {
+    background: #f3f4f6;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .comparison thead th.active {
+    background: #6366f1;
+    color: #fff;
+  }
+  .comparison tbody th {
+    text-align: left;
+    font-weight: 500;
+    background: #fff;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+  .comparison tbody td {
+    text-align: center;
+    background: #fff;
+  }
+  .comparison tbody td.active {
+    background: #eef2ff;
+  }
+  .comparison tbody td .check {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    line-height: 1.1rem;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 600;
+  }
+  .comparison tbody td .dash {
+    color: #9ca3af;
+    font-size: 0.75rem;
+  }
+
+  /* Even plan column widths */
+  .comparison thead th:not(:first-child),
+  .comparison tbody td {
+    width: auto;
+  }
+  .comparison {
+    table-layout: fixed;
+  }
+
+  /* Prevent horizontal overflow on small screens by forcing single active column (already handled) and allowing feature names to ellipsis */
+  @media (max-width: 640px) {
+    .comparison {
+      min-width: 0;
+      width: 100%;
+    }
+    .comparison thead th:first-child,
+    .comparison tbody th {
+      width: 120px;
+    }
+    .comparison thead th.active,
+    .comparison tbody td.active {
+      width: calc(100% - 120px);
+    }
+  }
+
+  /* Feature column sizing & hover tooltip */
+  .comparison thead th:first-child,
+  .comparison tbody th {
+    width: 140px;
+    max-width: 140px;
+  }
+  .comparison tbody th {
+    position: relative;
+  }
+  .comparison .feature-name {
+    display: block;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Tooltip style description (desktop) */
+  .comparison .feature-desc {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin-left: 8px;
+    background: #111827;
+    color: #fff;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.2;
+    max-width: 260px;
+    min-width: 160px;
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 20;
+    white-space: normal;
+    word-wrap: break-word;
+  }
+  .comparison tbody th:hover .feature-desc {
+    display: block;
+  }
+  /* Mobile keeps previous rule: hide all but active column; keep tooltip suppressed */
+  @media (max-width: 640px) {
+    .comparison .feature-desc {
+      display: none !important;
+    }
+    .comparison thead th:first-child,
+    .comparison tbody th {
+      width: 120px;
+      max-width: 120px;
+    }
+  }
+
+  /* Feature description styling (desktop) */
+  .comparison .feature-desc {
+    display: block;
+    font-weight: 400;
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 2px;
+    line-height: 1.15em;
+  }
+
+  /* Mobile: show only active plan column; hide others & inline descriptions */
+  @media (max-width: 640px) {
+    .comparison thead th:not(:first-child):not(.active),
+    .comparison tbody td:not(.active) {
+      display: none;
+    }
+    .comparison .feature-desc {
+      display: none;
+    }
+    /* Keep row header readable with tighter spacing */
+    .comparison tbody th {
+      font-size: 12px;
+    }
+  }
+
+  .feature-desc {
+    display: inline-block;
+    font-weight: 400;
+    color: #6b7280;
+    font-size: 11px;
+    line-height: 1.2rem;
+    max-width: 300px;
+    white-space: normal;
+    opacity: 0.9;
+  }
 `;

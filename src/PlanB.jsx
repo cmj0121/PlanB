@@ -34,6 +34,9 @@ export class PlanBWidget extends LitElement {
 
     /** Billing period: 'monthly' | 'yearly' */
     _billingPeriod: { state: true },
+
+    /** Feature dictionary (from JSON.features) */
+    _featureDict: { state: true },
   };
 
   static styles = planBStyles;
@@ -48,6 +51,7 @@ export class PlanBWidget extends LitElement {
     this._abortCtl = null;
     this._activeIndex = 0;
     this._billingPeriod = "monthly";
+    this._featureDict = {};
   }
 
   connectedCallback() {
@@ -79,6 +83,10 @@ export class PlanBWidget extends LitElement {
 
       const data = await resp.json();
       const plans = Array.isArray(data?.plans) ? data.plans : [];
+      this._featureDict =
+        data?.features && typeof data.features === "object"
+          ? data.features
+          : {};
 
       this._plans = plans.map((p) => ({
         name: p.name ?? "Unnamed",
@@ -105,7 +113,7 @@ export class PlanBWidget extends LitElement {
       };
       this._plans.forEach((p) => resolve(p));
       // Trim feature list for display (keep original merged ordering, first inherited then own)
-      this._plans.forEach((p) => (p.features = p.features.slice(0, 6)));
+      this._plans.forEach((p) => (p.features = p.features.slice()));
 
       // Determine default active index precedence:
       // 1. JSON response default_plan
