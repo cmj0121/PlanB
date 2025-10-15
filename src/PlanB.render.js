@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-/** Card template */
+/** Card template (single plan) */
 export function renderCard(plan, idx, activeIndex) {
   const monthly =
     plan.monthly_price != null ? `$${plan.monthly_price}/mo` : "—";
@@ -27,14 +27,21 @@ export function renderCard(plan, idx, activeIndex) {
   `;
 }
 
-/** Root wrapper template */
+/** Root wrapper template (delegates events back to component instance) */
 export function renderRoot(ctx) {
   const { _plans, _loading, _error, _activeIndex } = ctx;
   const showLoading = _loading && !_plans.length;
   const showEmpty = !_loading && !_plans.length;
 
   const cards = _plans.length
-    ? html`<div class="cards" @click=${(e) => ctx._onCardClick(e)}>
+    ? html`<div
+        class="cards"
+        @click=${(e) => ctx._onCardClick(e)}
+        @keydown=${(e) => ctx._onKeyNav?.(e)}
+        @scroll=${(e) => ctx._onScroll?.(e)}
+        tabindex="0"
+        role="list"
+      >
         ${_plans.map((p, i) => renderCard(p, i, _activeIndex))}
       </div>`
     : "";

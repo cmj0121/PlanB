@@ -22,11 +22,13 @@ export const planBStyles = css`
     margin: 0 auto;
     padding: 1rem;
   }
+
   header {
     font-weight: 600;
     font-size: 1.15rem;
     margin: 0 0 0.75rem;
   }
+
   .status {
     color: #6b7280;
     font-size: 12px;
@@ -39,19 +41,54 @@ export const planBStyles = css`
 
   /* Card container: snap scrolling on narrow; center items */
   .cards {
-    --card-width: 240px;
-    --card-gap: 1rem;
+    --card-width: 260px;
+    --card-gap: 1.25rem;
+    --peek: 12%; /* portion of next/prev card visible (slightly larger hint) */
     display: flex;
     gap: var(--card-gap);
     overflow-x: auto;
-    padding: 0.5rem 0.75rem 1rem;
+    /* Center card while revealing a peek of neighbors: side padding is half viewport - half card - peek portion */
+    padding: 0.5rem calc(50% - (var(--card-width) * (1 - var(--peek))) / 2) 1rem;
+    padding-top: 1rem; /* extra top padding for shadow */
     scroll-snap-type: x mandatory;
-    scroll-padding: 0 50%;
+    scroll-snap-stop: always; /* atomic snap */
+    scroll-padding-left: calc(
+      50% - (var(--card-width) * (1 - var(--peek))) / 2
+    );
+    scroll-padding-right: calc(
+      50% - (var(--card-width) * (1 - var(--peek))) / 2
+    );
     justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Hide scrollbar cross-browser (without removing accessibility) */
+  .cards {
+    scrollbar-width: none;
   }
   .cards::-webkit-scrollbar {
-    height: 8px;
+    display: none;
   }
+
+  /* Visual fade hint for more content */
+  .cards::before,
+  .cards::after {
+    content: "";
+    position: sticky;
+    top: 0;
+    bottom: 0;
+    width: 40px;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .cards::before {
+    left: 0;
+    background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
+  }
+  .cards::after {
+    right: 0;
+    background: linear-gradient(-90deg, #fff, rgba(255, 255, 255, 0));
+  }
+
   .cards::-webkit-scrollbar-thumb {
     background: #d1d5db;
     border-radius: 4px;
@@ -63,7 +100,7 @@ export const planBStyles = css`
     background: #fff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
-    padding: 0.95rem 1rem 1.1rem;
+    padding: 1rem 1rem 1.1rem; /* top padding adjusted to 1rem */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     position: relative;
     display: flex;

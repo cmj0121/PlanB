@@ -4,11 +4,13 @@ import { renderRoot } from "./PlanB.render.js";
 
 /**
  * <planb-widget>
- * Fetches pricing plans from a JSON endpoint and renders them as responsive cards.
- * Features:
- *  - Horizontal snapping carousel on narrow viewports.
- *  - Grid layout on wider screens.
- *  - Active card selection + centering (emits 'planb-select').
+ * Responsive pricing plans carousel (mobile) + grid (desktop).
+ * Responsibilities:
+ *  - Fetch plan data (JSON) from api-server.
+ *  - Auto-select default plan (JSON default_plan or attribute default-plan).
+ *  - Center active card with snap scrolling & partial neighbor peek.
+ *  - Keep selection in sync with user scroll, clicks, or keyboard.
+ *  - Emit 'planb-select' with { index, plan } on changes.
  */
 export class PlanBWidget extends LitElement {
   static properties = {
@@ -95,7 +97,10 @@ export class PlanBWidget extends LitElement {
       }
       if (this._activeIndex >= this._plans.length) this._activeIndex = 0;
 
-      requestAnimationFrame(() => this._scrollActiveIntoView());
+      // Ensure initial active card centers after first render in narrow view
+      this.updateComplete.then(() => {
+        this._scrollActiveIntoView(true);
+      });
     } catch (err) {
       if (err.name === "AbortError") return; // aborted fetch, ignore
       this._error = err.message || "Failed to load plans";
@@ -114,7 +119,14 @@ export class PlanBWidget extends LitElement {
     if (Number.isNaN(idx) || idx === this._activeIndex) return;
 
     this._activeIndex = idx;
-    this._scrollActiveIntoView();
+    // Prevent scroll listener from fighting programmatic centering
+    this._scrollLock = true;
+    this.updateComplete.then(() => {
+      this._scrollActiveIntoView(false);
+      setTimeout(() => {
+        this._scrollLock = false;
+      }, 180);
+    });
     this.dispatchEvent(
       new CustomEvent("planb-select", {
         detail: { index: idx, plan: this._plans[idx] },
@@ -123,22 +135,82 @@ export class PlanBWidget extends LitElement {
   }
 
   /** Center active card in scroll container on narrow viewports */
-  _scrollActiveIntoView() {
+  _scrollActiveIntoView(forceSnap) {
+    if (window.innerWidth >= 960) return; // desktop grid, no centering needed
     const cards = this.renderRoot?.querySelector(".cards");
     if (!cards) return;
-
     const active = cards.querySelector(".card.active");
     if (!active) return;
 
-    if (window.innerWidth >= 960) return; // desktop grid, no scrolling center needed
+    // Because we added symmetric side padding equal to half container minus half card width,
+    // the natural scroll position where the card starts is already visually centered. We can
+    // just snap to its offsetLeft.
+    const paddingLeft = parseFloat(getComputedStyle(cards).paddingLeft) || 0;
+    const target = active.offsetLeft - paddingLeft;
+    const clamped = Math.max(
+      0,
+      Math.min(target, cards.scrollWidth - cards.clientWidth),
+    );
+    if (Math.abs(clamped - cards.scrollLeft) > 1) {
+      cards.scrollTo({
+        left: clamped,
+        behavior: forceSnap ? "auto" : "smooth",
+      });
+    }
+  }
 
-    const rect = active.getBoundingClientRect();
-    const containerRect = cards.getBoundingClientRect();
-    const delta =
-      rect.left +
-      rect.width / 2 -
-      (containerRect.left + containerRect.width / 2);
-    cards.scrollBy({ left: delta, behavior: "smooth" });
+  /** Debounced scroll listener to sync active card after snap */
+  _onScroll(e) {
+    const cards = e.currentTarget;
+    if (window.innerWidth >= 960) return;
+    if (!cards || this._scrollLock) return;
+
+    // debounce using a timer so we only pick active after snap settles
+    clearTimeout(this._scrollTimer);
+    this._scrollTimer = setTimeout(() => {
+      const children = Array.from(cards.querySelectorAll(".card"));
+      if (!children.length) return;
+      const containerCenter = cards.scrollLeft + cards.clientWidth / 2;
+      // find card whose center is closest to container center
+      let best = 0;
+      let bestDist = Infinity;
+      children.forEach((el, i) => {
+        const center = el.offsetLeft + el.offsetWidth / 2;
+        const dist = Math.abs(center - containerCenter);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      if (best !== this._activeIndex) {
+        this._activeIndex = best;
+        this.dispatchEvent(
+          new CustomEvent("planb-select", {
+            detail: { index: best, plan: this._plans[best] },
+          }),
+        );
+      }
+    }, 120); // small delay after scroll end
+  }
+
+  _onKeyNav(e) {
+    if (window.innerWidth >= 960) return; // only for carousel mode
+    if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(e.key)) return;
+    e.preventDefault();
+    let idx = this._activeIndex;
+    if (e.key === "ArrowRight") idx = Math.min(this._plans.length - 1, idx + 1);
+    else if (e.key === "ArrowLeft") idx = Math.max(0, idx - 1);
+    else if (e.key === "Home") idx = 0;
+    else if (e.key === "End") idx = this._plans.length - 1;
+    if (idx !== this._activeIndex) {
+      this._activeIndex = idx;
+      this.updateComplete.then(() => this._scrollActiveIntoView());
+      this.dispatchEvent(
+        new CustomEvent("planb-select", {
+          detail: { index: idx, plan: this._plans[idx] },
+        }),
+      );
+    }
   }
 
   render() {
