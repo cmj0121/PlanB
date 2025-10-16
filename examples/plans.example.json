@@ -2,10 +2,8 @@
   "default_plan": "Pro",
   "plans": [
     {
-      "name": "Basic",
-      "description": "Basic plan suitable for individuals.",
-      "monthly_price": 9,
-      "yearly_price": 90,
+      "name": "Community",
+      "description": "The free plan for individuals.",
       "features": ["Feature 1"]
     },
     {
@@ -14,7 +12,7 @@
       "monthly_price": 19,
       "yearly_price": 190,
       "features": ["Feature 3"],
-      "inherits": "Basic",
+      "inherits": "Community",
       "action": {
         "name": "Start Trial",
         "url": "https://example.com/start-trial"

@@ -13,12 +13,12 @@ export function renderCard(plan, idx, activeIndex, billing) {
         ? `$${yearlyRaw}/yr`
         : monthlyRaw != null
           ? `$${monthlyRaw}/mo`
-          : "—"
+          : "Free"
       : monthlyRaw != null
         ? `$${monthlyRaw}/mo`
         : yearlyRaw != null
           ? `$${yearlyRaw}/yr`
-          : "—";
+          : "Free";
 
   return html`
     <div class="${classes}" data-index="${idx}" part="card">
