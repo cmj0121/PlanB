@@ -90,9 +90,8 @@ export const planBStyles = css`
     );
     justify-content: flex-start;
     -webkit-overflow-scrolling: touch;
-  }
-  /* Hide scrollbar cross-browser (without removing accessibility) */
-  .cards {
+
+    /* Hide scrollbar cross-browser (without removing accessibility) */
     scrollbar-width: none;
   }
   .cards::-webkit-scrollbar {
@@ -130,7 +129,6 @@ export const planBStyles = css`
     background: linear-gradient(180deg, #ffffff 0%, #f9fafb 100%);
     border: 1px solid #e5e7eb;
     border-radius: 18px;
-    padding: 1.1rem 1.05rem 1.25rem;
     box-shadow:
       0 1px 2px rgba(0, 0, 0, 0.04),
       0 4px 12px -2px rgba(0, 0, 0, 0.06);
@@ -160,55 +158,64 @@ export const planBStyles = css`
   .card:hover::before {
     opacity: 1;
   }
+  /* Headings */
   .card h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.05rem;
+    margin: 0 0 0.5rem;
+    font-size: 1.6rem;
     font-weight: 600;
     letter-spacing: 0.3px;
-    .card p.desc {
-      margin: 0 0 0.55rem;
-      font-size: 0.72rem;
-      line-height: 1.15rem;
-      color: #4b5563;
-      min-height: 2.3rem; /* two lines placeholder */
-    }
-    .card p.desc.placeholder {
-      opacity: 0;
-    }
-    .card ul.feature-list {
-      list-style: none;
-      margin: 0.25rem 0 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.35rem;
-    }
-    .card ul.feature-list li {
-      position: relative;
-      padding-left: 1rem;
-      font-size: 0.7rem;
-      line-height: 1rem;
-      color: #374151;
-    }
-    .card ul.feature-list li::before {
-      content: "";
-      position: absolute;
-      left: 0.2rem;
-      top: 0.45rem;
-      width: 0.4rem;
-      height: 0.4rem;
-      border-radius: 50%;
-      background: linear-gradient(90deg, #6366f1, #8b5cf6);
-      box-shadow: 0 0 0 2px #eef2ff;
-    }
-  }
-  .card-head {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
-    margin-bottom: 0.25rem;
+    gap: 2px;
+    text-align: center;
+  }
+  .card h3 small.plan-desc {
+    display: block;
+    min-height: 1.1rem;
+    font-weight: 400;
+    font-size: 0.75rem;
+    color: #6b7280;
+    line-height: 1.1;
+    padding: 0 0.75rem;
+    overflow: hidden;
+  }
+  .card h3 small.plan-desc.placeholder {
+    opacity: 0.25;
+  }
+
+  /* Feature list inside card */
+  .card ul.feature-list {
+    list-style: none;
+    margin: 0.6rem 0 0;
+    padding: 0.6rem 0.7rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .card ul.feature-list li {
+    position: relative;
+    padding-left: 1rem;
+    font-size: 0.7rem;
+    line-height: 1rem;
+    color: #374151;
+  }
+  .card ul.feature-list li::before {
+    content: ">";
+    position: absolute;
+    left: 0.2rem;
+    top: 0.08rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #6366f1;
+  }
+  /* Legacy wrappers cleanup */
+  .card-head,
+  .card-body {
+    margin-top: 0.5rem;
+    padding: 0;
   }
   .card.active {
+    border-width: 2px;
     border-color: #6366f1;
     box-shadow:
       0 4px 16px -3px rgba(99, 102, 241, 0.45),
@@ -216,29 +223,71 @@ export const planBStyles = css`
     transform: translateY(-3px);
   }
 
+  /* Price row */
   .price-row {
-    font-size: 0.85rem;
-    color: #374151;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    margin-bottom: 0.35rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    margin: 0.25rem 0 0.55rem;
+    text-align: center;
   }
+  .price-row .price {
+    font-size: 1.65rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  /* Call-to-action button */
+  .card .cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    margin: 0.45rem auto 0.6rem;
+    padding: 0.6rem 0.75rem;
+    font-size: 1.125rem;
+    letter-spacing: 0.3px;
+    color: #374151;
+    background: #e5e7eb;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1px solid #d1d5db;
+    transition:
+      background 0.25s,
+      box-shadow 0.25s;
+  }
+  .card .cta:hover { background:#d1d5db; }
+  .card.active .cta {
+    font-weight: 600;
+    background:#6366f1;
+	color:#fff;
+	border-color:#6366f1;
+	box-shadow:0 4px 12px -2px rgba(99,102,241,0.35);
+  }
+  .card .cta:active {
+    background:#cbd5e1;
+  }
+    background: #4f46e5;
+    box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.45);
+  }
+  .card .cta:active {
+    background: #4338ca;
+  }
+
+  /* Inheritance hint */
   .card .more {
     display: block;
-    min-height: 1.05em; /* placeholder height */
-    list-style: none;
-    margin: 0 0 0.4rem;
-    font-size: 0.68rem;
+    min-height: 1.05em;
+    font-size: 0.84rem;
     letter-spacing: 0.15px;
     font-weight: 500;
-    color: #6366f1;
-    padding: 0.25rem 0.55rem;
+    padding: 0.3rem 0.6rem;
     width: fit-content;
+    margin-top: 0.4rem;
   }
   .price {
     font-weight: 700;
-    color: #4f46e5;
     font-size: 0.95rem;
   }
   .divider {
@@ -271,6 +320,7 @@ export const planBStyles = css`
     width: 100%;
     min-width: 520px;
     font-size: 12px;
+    table-layout: fixed;
   }
   .comparison th,
   .comparison td {
@@ -418,16 +468,5 @@ export const planBStyles = css`
     .comparison tbody th {
       font-size: 12px;
     }
-  }
-
-  .feature-desc {
-    display: inline-block;
-    font-weight: 400;
-    color: #6b7280;
-    font-size: 11px;
-    line-height: 1.2rem;
-    max-width: 300px;
-    white-space: normal;
-    opacity: 0.9;
   }
 `;

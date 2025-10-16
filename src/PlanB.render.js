@@ -23,24 +23,31 @@ export function renderCard(plan, idx, activeIndex, billing) {
   return html`
     <div class="${classes}" data-index="${idx}" part="card">
       <div class="card-head">
-        <h3>${plan.name}</h3>
+        <h3>
+          ${plan.name}
+          <small class="plan-desc ${plan.description ? "" : "placeholder"}">
+            ${plan.description ? plan.description : "\u00A0"}
+          </small>
+        </h3>
         <div class="price-row">
           <span class="price">${display}</span>
         </div>
+        <a href="#" class="cta" part="cta" @click=${(e) => e.preventDefault()}
+          >Start</a
+        >
       </div>
-      ${plan.description
-        ? html`<p class="desc">${plan.description}</p>`
-        : html`<p class="desc placeholder">&nbsp;</p>`}
-      <span class="more"
-        >${plan.inherits
-          ? html`Everything include <b>${plan.inherits}</b>, and more ...`
-          : ""}</span
-      >
-      ${plan.features?.length
-        ? html`<ul class="feature-list">
-            ${plan.features.map((f) => html`<li>${f}</li>`)}
-          </ul>`
-        : ""}
+      <div class="card-body">
+        <span class="more"
+          >${plan.inherits
+            ? html`Everything include <b>${plan.inherits}</b>, and more ...`
+            : ""}</span
+        >
+        ${plan.features?.length
+          ? html`<ul class="feature-list">
+              ${plan.features.map((f) => html`<li>${f}</li>`)}
+            </ul>`
+          : ""}
+      </div>
     </div>
   `;
 }
