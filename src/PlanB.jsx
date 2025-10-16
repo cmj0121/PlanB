@@ -95,6 +95,13 @@ export class PlanBWidget extends LitElement {
         inherits: p.inherits || null,
         description: typeof p.description === "string" ? p.description : "",
         features: Array.isArray(p.features) ? p.features.slice() : [],
+        action:
+          p.action &&
+          typeof p.action === "object" &&
+          typeof p.action.name === "string" &&
+          typeof p.action.url === "string"
+            ? { name: p.action.name, url: p.action.url }
+            : null,
       }));
 
       // Resolve inheritance: merge features from inherited plan(s)

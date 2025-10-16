@@ -14,7 +14,11 @@
       "monthly_price": 19,
       "yearly_price": 190,
       "features": ["Feature 3"],
-      "inherits": "Basic"
+      "inherits": "Basic",
+      "action": {
+        "name": "Start Trial",
+        "url": "https://example.com/start-trial"
+      }
     },
     {
       "name": "Enterprise",
@@ -22,7 +26,11 @@
       "monthly_price": 49,
       "yearly_price": 490,
       "features": ["Feature 4"],
-      "inherits": "Pro"
+      "inherits": "Pro",
+      "action": {
+        "name": "Contact Sales",
+        "url": "https://example.com/contact-sales"
+      }
     }
   ],
   "features": {

@@ -32,9 +32,19 @@ export function renderCard(plan, idx, activeIndex, billing) {
         <div class="price-row">
           <span class="price">${display}</span>
         </div>
-        <a href="#" class="cta" part="cta" @click=${(e) => e.preventDefault()}
-          >Start</a
-        >
+        ${plan.action
+          ? html`<a
+              href="${plan.action.url}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cta"
+              part="cta"
+              @click=${(e) => {
+                e.stopPropagation();
+              }}
+              >${plan.action.name}</a
+            >`
+          : ""}
       </div>
       <div class="card-body">
         <span class="more"
