@@ -15,7 +15,7 @@ run: build						# run in the local environment
 
 build: node_modules				# build the binary/library
 	@pnpm run lint
-	@pnpm run build
+	@pnpm run build && cp dist/planb.js examples/
 
 upgrade:						# upgrade all the necessary packages
 	pre-commit autoupdate
