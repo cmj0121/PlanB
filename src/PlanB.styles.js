@@ -187,32 +187,65 @@ export const planBStyles = css`
   .card ul.feature-list {
     list-style: none;
     margin: 0.6rem 0 0;
-    padding: 0.6rem 0.7rem 0.7rem;
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
   }
+  .card ul.feature-list li.feature-item {
+    cursor: pointer;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .card ul.feature-list li.feature-item:hover {
+    background: #f1f5f9;
+  }
+  .card ul.feature-list li.feature-item .f-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    width: 100%;
+  }
+  .card ul.feature-list li.feature-item .f-icon {
+    display: inline-block;
+    font-size: 1.05rem;
+    line-height: 1;
+    color: #6366f1;
+    transition: transform 0.25s, color 0.25s;
+  }
+  .card ul.feature-list li.feature-item.open .f-icon {
+    color: #4338ca;
+    transform: scale(1.05);
+  }
+  .card ul.feature-list li.feature-item .f-name {
+    font-size: 0.85rem;
+    font-weight: 750;
+    color: #374151;
+  }
+  .card ul.feature-list li.feature-item .f-desc {
+    font-size: 0.72rem;
+    line-height: 1.05rem;
+    color: #374151;
+    margin: 0;
+    padding: 0.55rem 0.6rem;
+  }
   .card ul.feature-list li {
     position: relative;
-    padding-left: 1rem;
+    padding-left: 0; /* removed old left padding for '>' icon */
     font-size: 0.7rem;
     line-height: 1rem;
     color: #374151;
-  }
-  .card ul.feature-list li::before {
-    content: ">";
-    position: absolute;
-    left: 0.2rem;
-    top: 0.08rem;
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: #6366f1;
+    display: flex;
+    align-items: flex-start;
   }
   /* Legacy wrappers cleanup */
   .card-head,
   .card-body {
     margin-top: 0.5rem;
     padding: 0;
+	padding-bottom: 1rem;
   }
   .card.active {
     border-width: 2px;
@@ -416,10 +449,8 @@ export const planBStyles = css`
     left: 100%;
     top: 0;
     margin-left: 8px;
-    background: #111827;
     color: #fff;
     padding: 0.5rem 0.6rem;
-    border-radius: 6px;
     font-size: 11px;
     line-height: 1.2;
     max-width: 260px;

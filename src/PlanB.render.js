@@ -1,7 +1,7 @@
 import { html } from "lit";
 
 /** Card template (single plan) */
-export function renderCard(plan, idx, activeIndex, billing) {
+export function renderCard(plan, idx, activeIndex, billing, ctx) {
   const monthlyRaw = plan.monthly_price != null ? plan.monthly_price : null;
   const yearlyRaw = plan.yearly_price != null ? plan.yearly_price : null;
   const active = idx === activeIndex;
@@ -49,12 +49,35 @@ export function renderCard(plan, idx, activeIndex, billing) {
       <div class="card-body">
         <span class="more"
           >${plan.inherits
-            ? html`Everything include <b>${plan.inherits}</b>, and more ...`
+            ? html`Everything include <b>${plan.inherits}</b>, and ...`
             : ""}</span
         >
         ${plan.features?.length
           ? html`<ul class="feature-list">
-              ${plan.features.map((f) => html`<li>${f}</li>`)}
+              ${plan.features.map((f) => {
+                const desc = ctx._featureDict?.[f];
+                return html`<li
+                  @click=${(e) => ctx._toggleFeature?.(e, f)}
+                  data-feature="${f}"
+                  class="feature-item ${desc ? "has-desc" : ""} ${desc &&
+                  ctx._openFeatures?.has(f)
+                    ? "open"
+                    : ""}"
+                  part="feature-item"
+                >
+                  <div class="f-head">
+                    <span class="f-icon" aria-hidden="true"
+                      >${desc && ctx._openFeatures?.has(f) ? "📂" : "📁"}</span
+                    >
+                    <span class="f-name">${f}</span>
+                  </div>
+                  ${desc && ctx._openFeatures?.has(f)
+                    ? html`<div class="f-desc" part="feature-desc">
+                        ${desc}
+                      </div>`
+                    : ""}
+                </li>`;
+              })}
             </ul>`
           : ""}
       </div>
@@ -84,7 +107,9 @@ export function renderRoot(ctx) {
         tabindex="0"
         role="list"
       >
-        ${_plans.map((p, i) => renderCard(p, i, _activeIndex, _billingPeriod))}
+        ${_plans.map((p, i) =>
+          renderCard(p, i, _activeIndex, _billingPeriod, ctx),
+        )}
       </div>`
     : "";
 

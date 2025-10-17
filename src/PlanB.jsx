@@ -52,6 +52,14 @@ export class PlanBWidget extends LitElement {
     this._activeIndex = 0;
     this._billingPeriod = "monthly";
     this._featureDict = {};
+    this._openFeatures = new Set();
+    this._toggleFeature = (e, fname) => {
+      e.stopPropagation();
+      if (!fname) return;
+      if (this._openFeatures.has(fname)) this._openFeatures.delete(fname);
+      else this._openFeatures.add(fname);
+      this.requestUpdate();
+    };
   }
 
   connectedCallback() {
