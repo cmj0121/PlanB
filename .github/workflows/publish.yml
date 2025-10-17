@@ -11,8 +11,11 @@ on:
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
+    # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
     permissions:
-      contents: write
+      contents: read
+      pages: write
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -30,8 +33,10 @@ jobs:
           cp dist/planb.js examples/planb.js
 
       - name: Upload to Github Page
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/upload-pages-artifact@v3
         if: ${{ github.event_name == 'push' }}
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          path: examples/
+      - name: Deploy to GitHub Pages
+        if: ${{ github.event_name == 'push' }}
+        uses: actions/deploy-pages@v4
