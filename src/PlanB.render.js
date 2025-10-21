@@ -13,12 +13,12 @@ export function renderCard(plan, idx, activeIndex, billing, ctx) {
         ? `$${yearlyRaw}/yr`
         : monthlyRaw != null
           ? `$${monthlyRaw}/mo`
-          : "Free"
+          : `${plan.sponsor ? "" : "Free"}`
       : monthlyRaw != null
         ? `$${monthlyRaw}/mo`
         : yearlyRaw != null
           ? `$${yearlyRaw}/yr`
-          : "Free";
+          : `${plan.sponsor ? "" : "Free"}`;
 
   return html`
     <div class="${classes}" data-index="${idx}" part="card">
@@ -39,9 +39,7 @@ export function renderCard(plan, idx, activeIndex, billing, ctx) {
               rel="noopener noreferrer"
               class="cta"
               part="cta"
-              @click=${(e) => {
-                e.stopPropagation();
-              }}
+              @click=${(e) => e.stopPropagation()}
               >${plan.action.name}</a
             >`
           : ""}

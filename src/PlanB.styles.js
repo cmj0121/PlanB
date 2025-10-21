@@ -176,6 +176,7 @@ export const planBStyles = css`
     font-size: 0.75rem;
     color: #6b7280;
     line-height: 1.1;
+	margin-top: 2px;
     padding: 0 0.75rem;
     overflow: hidden;
   }
@@ -259,6 +260,8 @@ export const planBStyles = css`
   /* Price row */
   .price-row {
     display: flex;
+	width: 100%;
+	height: 2rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -298,6 +301,15 @@ export const planBStyles = css`
 	border-color:#6366f1;
 	box-shadow:0 4px 12px -2px rgba(99,102,241,0.35);
   }
+  /* Sponsor button variant */
+  .card .cta.cta-sponsor {
+    background:#fff;
+    border-color:#fbbf24;
+    color:#b45309;
+  }
+  .card .cta.cta-sponsor:hover { background:#fef3c7; }
+  .card.active .cta.cta-sponsor { border-color:#f59e0b; color:#92400e; }
+
   .card .cta:active {
     background:#cbd5e1;
   }

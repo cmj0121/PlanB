@@ -110,6 +110,7 @@ export class PlanBWidget extends LitElement {
           typeof p.action.url === "string"
             ? { name: p.action.name, url: p.action.url }
             : null,
+        sponsor: p.sponsor || false,
       }));
 
       // Resolve inheritance: merge features from inherited plan(s)

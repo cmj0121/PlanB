@@ -1,30 +1,29 @@
 {
-  "default_plan": "Pro",
+  "default_plan": "Sponsor",
   "plans": [
     {
       "name": "Community",
       "description": "The free plan for individuals.",
-      "features": ["Feature 1"]
+      "features": ["Open Source", "Contributor", "Issuer"]
     },
     {
-      "name": "Pro",
-      "description": "Pro plan for small teams.",
-      "monthly_price": 19,
-      "yearly_price": 190,
-      "features": ["Feature 3"],
+      "name": "Sponsor",
+      "description": "Your support helps us grow.",
+      "sponsor": true,
+      "features": ["Badge"],
       "inherits": "Community",
       "action": {
-        "name": "Start Trial",
-        "url": "https://example.com/start-trial"
+        "name": "By Me a Coffee",
+        "url": "https://buymeacoffee.com/cmj0121"
       }
     },
     {
-      "name": "Enterprise",
-      "description": "Enterprise plan for large organizations.",
+      "name": "Premium",
+      "description": "The customized features for professionals.",
       "monthly_price": 49,
       "yearly_price": 490,
-      "features": ["Feature 4"],
-      "inherits": "Pro",
+      "features": ["Custom Feature"],
+      "inherits": "Sponsor",
       "action": {
         "name": "Contact Sales",
         "url": "https://example.com/contact-sales"
@@ -32,9 +31,10 @@
     }
   ],
   "features": {
-    "Feature 1": "Description for Feature 1",
-    "Feature 2": "Description for Feature 2",
-    "Feature 3": "Description for Feature 3",
-    "Feature 4": "Description for Feature 4"
+    "Open Source": "The project is open source and free to use, based on the MIT license.",
+    "Contributor": "Welcome to contribute to the project on GitHub.",
+    "Issuer": "You can submit any issues you find on Github.",
+    "Badge": "Get a special badge to show your support.",
+    "Custom Feature": "Access to customized features tailored for your needs."
   }
 }
