@@ -13,7 +13,7 @@
       "features": ["Badge"],
       "inherits": "Community",
       "action": {
-        "name": "By Me a Coffee",
+        "name": "Buy Me a Coffee",
         "url": "https://buymeacoffee.com/cmj0121"
       }
     },
