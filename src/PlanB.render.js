@@ -32,17 +32,19 @@ export function renderCard(plan, idx, activeIndex, billing, ctx) {
         <div class="price-row">
           <span class="price">${display}</span>
         </div>
-        ${plan.action
-          ? html`<a
-              href="${plan.action.url}"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="cta"
-              part="cta"
-              @click=${(e) => e.stopPropagation()}
-              >${plan.action.name}</a
-            >`
-          : ""}
+        <span class="action">
+          ${plan.action
+            ? html`<a
+                href="${plan.action.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="cta"
+                part="cta"
+                @click=${(e) => e.stopPropagation()}
+                >${plan.action.name}</a
+              >`
+            : ""}
+        </span>
       </div>
       <div class="card-body">
         <span class="more"
@@ -50,9 +52,9 @@ export function renderCard(plan, idx, activeIndex, billing, ctx) {
             ? html`Everything include <b>${plan.inherits}</b>, and ...`
             : ""}</span
         >
-        ${plan.features?.length
+        ${plan._features?.length
           ? html`<ul class="feature-list">
-              ${plan.features.map((f) => {
+              ${plan._features.map((f) => {
                 const desc = ctx._featureDict?.[f];
                 return html`<li
                   @click=${(e) => ctx._toggleFeature?.(e, f)}

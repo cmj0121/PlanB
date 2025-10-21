@@ -183,6 +183,11 @@ export const planBStyles = css`
   .card h3 small.plan-desc.placeholder {
     opacity: 0.25;
   }
+  .card .action {
+    display: inline-block;
+    height: 2.5rem;
+	width: 100%;
+  }
 
   /* Feature list inside card */
   .card ul.feature-list {

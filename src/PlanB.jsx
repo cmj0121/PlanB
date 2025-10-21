@@ -103,6 +103,7 @@ export class PlanBWidget extends LitElement {
         inherits: p.inherits || null,
         description: typeof p.description === "string" ? p.description : "",
         features: Array.isArray(p.features) ? p.features.slice() : [],
+        _features: Array.isArray(p.features) ? p.features.slice() : [],
         action:
           p.action &&
           typeof p.action === "object" &&
