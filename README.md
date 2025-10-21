@@ -14,6 +14,8 @@ and write your own html page to include the built script and use the `<planb-wid
 <planb-widget api-server="./plans.example.json"></planb-widget>
 ```
 
+You can also find the example page in this [page](https://cmj0121.github.io/PlanB/).
+
 ## License
 
 MIT
