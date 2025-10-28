@@ -19,14 +19,14 @@
     },
     {
       "name": "Premium",
-      "description": "The customized features for professionals.",
-      "monthly_price": 49,
-      "yearly_price": 490,
-      "features": ["Custom Feature"],
+      "description": "The customized features for professionals, periodically billed.",
+      "monthly_price": 9,
+      "yearly_price": 90,
+      "features": ["Custom Feature", "Ask Me Anything"],
       "inherits": "Sponsor",
       "action": {
-        "name": "Contact Sales",
-        "url": "https://example.com/contact-sales"
+        "name": "Buy Me a Coffee",
+        "url": "https://buymeacoffee.com/cmj0121"
       }
     }
   ],
@@ -35,6 +35,7 @@
     "Contributor": "Welcome to contribute to the project on GitHub.",
     "Issuer": "You can submit any issues you find on Github.",
     "Badge": "Get a special badge to show your support.",
-    "Custom Feature": "Access to customized features tailored for your needs."
+    "Custom Feature": "Access to customized features tailored for your needs.",
+	"Ask Me Anything": "Get direct access to ask questions and receive answers from the team."
   }
 }
